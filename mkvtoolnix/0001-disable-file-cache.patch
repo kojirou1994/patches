@@ -1,0 +1,25 @@
+From d7b909dcffd8c13c8f8e1b35ddf541fa67cd880a Mon Sep 17 00:00:00 2001
+From: kojirou <kojirouhtc@gmail.com>
+Date: Mon, 24 May 2021 00:22:14 +0800
+Subject: [PATCH] disable file cache
+
+---
+ src/common/mm_file_io/unix.cpp | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/common/mm_file_io/unix.cpp b/src/common/mm_file_io/unix.cpp
+index 458669fb7..6fc09b6ff 100644
+--- a/src/common/mm_file_io/unix.cpp
++++ b/src/common/mm_file_io/unix.cpp
+@@ -78,6 +78,8 @@ mm_file_io_private_c::mm_file_io_private_c(std::string const &p_file_name,
+ 
+   if (!file)
+     throw mtx::mm_io::open_x{mtx::mm_io::make_error_code()};
++
++  fcntl(fileno(file), F_NOCACHE, 1);
+ }
+ 
+ void
+-- 
+2.30.1 (Apple Git-130)
+
