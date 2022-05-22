@@ -1,0 +1,35 @@
+From def1d899b0eabefb93a7b1f111295db582c23fec Mon Sep 17 00:00:00 2001
+From: kojirou <kojirouhtc@gmail.com>
+Date: Mon, 23 May 2022 04:20:32 +0800
+Subject: [PATCH] change AV_CODEC_FLAG priority for libx265
+
+---
+ libavcodec/libx265.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/libavcodec/libx265.c b/libavcodec/libx265.c
+index b2008e96f1..750c235314 100644
+--- a/libavcodec/libx265.c
++++ b/libavcodec/libx265.c
+@@ -130,6 +130,9 @@ static av_cold int libx265_encode_init(AVCodecContext *avctx)
+         return AVERROR(ENOMEM);
+     }
+ 
++    ctx->params->bEnablePsnr     = !!(avctx->flags & AV_CODEC_FLAG_PSNR);
++    ctx->params->bOpenGOP        = !(avctx->flags & AV_CODEC_FLAG_CLOSED_GOP);
++
+     if (ctx->api->param_default_preset(ctx->params, ctx->preset, ctx->tune) < 0) {
+         int i;
+ 
+@@ -158,8 +161,6 @@ static av_cold int libx265_encode_init(AVCodecContext *avctx)
+     }
+     ctx->params->sourceWidth     = avctx->width;
+     ctx->params->sourceHeight    = avctx->height;
+-    ctx->params->bEnablePsnr     = !!(avctx->flags & AV_CODEC_FLAG_PSNR);
+-    ctx->params->bOpenGOP        = !(avctx->flags & AV_CODEC_FLAG_CLOSED_GOP);
+ 
+     /* Tune the CTU size based on input resolution. */
+     if (ctx->params->sourceWidth < 64 || ctx->params->sourceHeight < 64)
+-- 
+2.32.1 (Apple Git-133)
+
