@@ -1,0 +1,25 @@
+From 4274631ecf99c8920cf544b58678260a9332eb09 Mon Sep 17 00:00:00 2001
+From: kojirou <kojirouhtc@gmail.com>
+Date: Mon, 23 May 2022 02:30:41 +0800
+Subject: [PATCH] fix Ctrl+C
+
+---
+ source/abrEncApp.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/source/abrEncApp.cpp b/source/abrEncApp.cpp
+index cd85154f1..8711ab8cd 100644
+--- a/source/abrEncApp.cpp
++++ b/source/abrEncApp.cpp
+@@ -1074,7 +1074,7 @@ ret:
+             }
+ 
+             x265_picture* dest = m_parentEnc->m_parent->m_inputPicBuffer[m_id][writeIdx];
+-            if (m_input->readPicture(*src))
++            if (m_input->readPicture(*src) && !b_ctrl_c)
+             {
+                 dest->poc = src->poc;
+                 dest->pts = src->pts;
+-- 
+2.32.1 (Apple Git-133)
+
